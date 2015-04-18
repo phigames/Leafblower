@@ -19,3 +19,7 @@ C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\leaf2.png
 C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\pavement.png
 C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\basket.png
 C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\Bangers.ttf
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\ant.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\dirt.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\magnifier.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\smoke.png

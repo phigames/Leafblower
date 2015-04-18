@@ -14,10 +14,11 @@ namespace Leafblower
         public Basket()
         {
             Sprite = new Sprite(Resources.Textures["basket"]);
-            HitPoint = new Vector2f(Game.Width / 2, 51);
+            HitPoint = new Vector2f(Game.Width / 2, 45);
             HitRadius = 51;
             Sprite.Origin = new Vector2f(55, 59);
             Sprite.Position = HitPoint;
+            Below = true;
         }
 
         protected override void Collect(Entity enemy)

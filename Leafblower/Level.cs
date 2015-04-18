@@ -29,23 +29,40 @@ namespace Leafblower
         public Level(LevelState gameState, int id)
         {
             GameState = gameState;
-            if (id == 0)
+            Enemies = new List<Entity>();
+            if (id == 1)
             {
                 Background = new Sprite(Resources.Textures["pavement"]);
                 Collector = new Basket();
                 CollectionTarget = 50;
                 Center = new Vector2f(Game.Width / 2, 0);
-                Leafblower = new Leafblower(Center);
-                Enemies = new List<Entity>();
                 for (int i = 0; i < 100; i++)
                 {
                     Enemies.Add(new Leaf((float)(Game.Random.NextDouble() * 0.8 + 0.1) * Game.Width, (float)(Game.Random.NextDouble() * 0.6 + 0.3) * Game.Height));
                 }
             }
-            else if (id == 1)
+            else if (id == 0)
             {
-
+                Background = new Sprite(Resources.Textures["dirt"]);
+                Collector = new Magnifier();
+                CollectionTarget = 25;
+                Center = new Vector2f(520, 275);
+                for (int i = 0; i < 100; i++)
+                {
+                    float x, y;
+                    float dX, dY;
+                    do
+                    {
+                        x = (float)Game.Random.NextDouble() * Game.Width;
+                        y = (float)Game.Random.NextDouble() * Game.Height;
+                        dX = x - Center.X;
+                        dY = y - Center.Y;
+                    }
+                    while (dX * dX + dY * dY < 2500);
+                    Enemies.Add(new Ant(x, y));
+                }
             }
+            Leafblower = new Leafblower(Center);
             CollectionText = new Text(String.Format("0/{0}", CollectionTarget), Resources.Font, 50);
             CollectionText.Position = new Vector2f(30, 30);
             CollectionText.Color = Color.Black;
@@ -84,6 +101,8 @@ namespace Leafblower
                     if (Collection >= CollectionTarget)
                     {
                         Won = true;
+                        FadeOutTime += 4;
+                        FadeRectangle.FillColor = new Color(255, 255, 255, (byte)FadeOutTime);
                     }
                 }
             }
@@ -115,10 +134,17 @@ namespace Leafblower
         public void Draw()
         {
             Game.Window.Draw(Background);
-            Collector.Draw();
+            if (Collector.Below)
+            {
+                Collector.Draw();
+            }
             for (int i = 0; i < Enemies.Count; i++)
             {
                 Enemies[i].Draw();
+            }
+            if (!Collector.Below)
+            {
+                Collector.Draw();
             }
             Leafblower.Draw();
             Game.Window.Draw(CollectionText);

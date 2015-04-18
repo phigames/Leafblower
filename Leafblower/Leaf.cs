@@ -45,6 +45,22 @@ namespace Leafblower
                     Speed *= 0.9f;
                 }
                 HitPoint += Speed * 400;
+                if (HitPoint.X < HitRadius)
+                {
+                    HitPoint = new Vector2f(HitRadius, HitPoint.Y);
+                }
+                else if (HitPoint.X > Game.Width - HitRadius)
+                {
+                    HitPoint = new Vector2f(Game.Width - HitRadius, HitPoint.Y);
+                }
+                if (HitPoint.Y < HitRadius)
+                {
+                    HitPoint = new Vector2f(HitPoint.X, HitRadius);
+                }
+                else if (HitPoint.Y > Game.Height - HitRadius)
+                {
+                    HitPoint = new Vector2f(HitPoint.X, Game.Height - HitRadius);
+                }
                 Sprite.Position = HitPoint;
                 Sprite.Rotation += (Speed.X + Speed.Y) * RotationSpeed;
             }
