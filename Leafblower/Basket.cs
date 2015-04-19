@@ -18,7 +18,6 @@ namespace Leafblower
             HitRadius = 51;
             Sprite.Origin = new Vector2f(55, 59);
             Sprite.Position = HitPoint;
-            Below = true;
         }
 
         protected override void Collect(Entity enemy)
@@ -26,5 +25,12 @@ namespace Leafblower
             Collection++;
             enemy.BeCollected(new Vector2f(HitPoint.X + (float) (Game.Random.NextDouble() - 0.5) * 40, HitPoint.Y + (float) (Game.Random.NextDouble() - 0.5) * 40));
         }
+
+        public override void DrawBelow()
+        {
+            Game.Window.Draw(Sprite);
+        }
+
+        public override void DrawAbove() { }
     }
 }

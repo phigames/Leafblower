@@ -11,7 +11,6 @@ namespace Leafblower
 {
     abstract class CollectionDevice : Entity
     {
-        public bool Below;
         public int Collection;
 
         protected abstract void Collect(Entity enemy);
@@ -25,17 +24,15 @@ namespace Leafblower
                     Collect(level.Enemies[i]);
                 }
             }
-            CustomUpdate(level);
+            UpdateAnimations(level);
         }
 
-        protected virtual void CustomUpdate(Level level) { }
+        protected virtual void UpdateAnimations(Level level) { }
 
-        public override void Draw()
-        {
-            Game.Window.Draw(Sprite);
-            CustomDraw();
-        }
+        public override void Draw() { }
 
-        protected virtual void CustomDraw() { }
+        public abstract void DrawBelow();
+
+        public abstract void DrawAbove();
     }
 }

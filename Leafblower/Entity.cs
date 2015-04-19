@@ -12,7 +12,7 @@ namespace Leafblower
     abstract class Entity
     {
         protected Sprite Sprite;
-        protected Vector2f HitPoint;
+        public Vector2f HitPoint;
         protected float HitRadius;
         public bool Collected;
 

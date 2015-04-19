@@ -9,7 +9,7 @@ using SFML.Graphics;
 
 namespace Leafblower
 {
-    class Ant : Entity
+    class Pig : Entity
     {
         private Texture Texture;
         private IntRect[] AnimationFrames;
@@ -20,18 +20,18 @@ namespace Leafblower
         private Vector2f Speed;
         private byte Alpha;
 
-        public Ant(float x, float y)
+        public Pig(float x, float y)
         {
-            Texture = Resources.Textures["ant"];
-            AnimationFrames = new IntRect[] { new IntRect(0, 0, 43, 39), new IntRect(43, 0, 43, 39) };
+            Texture = Resources.Textures["pig"];
+            AnimationFrames = new IntRect[] { new IntRect(0, 0, 187, 82), new IntRect(187, 0, 187, 82) };
             Frame = Game.Random.Next(2);
-            FrameTime = Game.Random.Next(10);
+            FrameTime = Game.Random.Next(20);
             Sprite = new Sprite(Texture, AnimationFrames[Frame]);
             HitPoint = new Vector2f(x, y);
-            HitRadius = 15;
+            HitRadius = 40;
             Angle = (float)Game.Random.NextDouble() * 360;
-            WalkingSpeed = 1;
-            Sprite.Origin = new Vector2f(22, 20);
+            WalkingSpeed = 0.5f;
+            Sprite.Origin = new Vector2f(90, 41);
             Sprite.Position = HitPoint;
             Sprite.Rotation = Angle;
             Alpha = 255;
@@ -41,58 +41,76 @@ namespace Leafblower
         {
             if (!Collected)
             {
-                if (level.Leafblower.Blowing && level.Leafblower.InBlowingRange(HitPoint.X, HitPoint.Y))
+                bool b = level.Leafblower.Blowing && level.Leafblower.InBlowingRange(HitPoint.X, HitPoint.Y);
+                if (b)
                 {
                     Speed = level.Leafblower.GetSpeedVector(HitPoint.X, HitPoint.Y);
+                    WalkingSpeed = 1;
                 }
                 else
                 {
                     Speed *= 0.9f;
+                    WalkingSpeed = 0.5f;
                 }
-                HitPoint += Speed * 800;
+                HitPoint += Speed * 200;
                 double a = Angle * Math.PI / 180;
                 HitPoint += new Vector2f((float)Math.Cos(a) * WalkingSpeed, (float)Math.Sin(a) * WalkingSpeed);
                 Sprite.Position = HitPoint;
                 float dX = HitPoint.X - level.Center.X;
                 float dY = HitPoint.Y - level.Center.Y;
-                if (dX * dX + dY * dY < 2500)
+                if (!b)
                 {
-                    if (dX > 0)
+                    if (dX * dX + dY * dY < 14400)
                     {
-                        Angle = (float)(Math.Atan(dY / dX) / Math.PI * 180);
+                        if (dX > 0)
+                        {
+                            Angle = (float)(Math.Atan(dY / dX) / Math.PI * 180);
+                        }
+                        else
+                        {
+                            Angle = (float)(Math.Atan(dY / dX) / Math.PI * 180) + 180;
+                        }
+                        Sprite.Rotation = Angle;
                     }
-                    else
-                    {
-                        Angle = (float)(Math.Atan(dY / dX) / Math.PI * 180) + 180;
-                    }
-                    Sprite.Rotation = Angle;
                 }
                 if (HitPoint.X < HitRadius)
                 {
                     HitPoint = new Vector2f(HitRadius, HitPoint.Y);
-                    Angle = 180 - Angle;
-                    Sprite.Rotation = Angle;
+                    if (!b)
+                    {
+                        Angle = 180 - Angle;
+                        Sprite.Rotation = Angle;
+                    }
                 }
                 else if (HitPoint.X > Game.Width - HitRadius)
                 {
                     HitPoint = new Vector2f(Game.Width - HitRadius, HitPoint.Y);
-                    Angle = 180 - Angle;
-                    Sprite.Rotation = Angle;
+                    if (!b)
+                    {
+                        Angle = 180 - Angle;
+                        Sprite.Rotation = Angle;
+                    }
                 }
                 if (HitPoint.Y < HitRadius)
                 {
                     HitPoint = new Vector2f(HitPoint.X, HitRadius);
-                    Angle = -Angle;
-                    Sprite.Rotation = Angle;
+                    if (!b)
+                    {
+                        Angle = -Angle;
+                        Sprite.Rotation = Angle;
+                    }
                 }
                 else if (HitPoint.Y > Game.Height - HitRadius)
                 {
                     HitPoint = new Vector2f(HitPoint.X, Game.Height - HitRadius);
-                    Angle = -Angle;
-                    Sprite.Rotation = Angle;
+                    if (!b)
+                    {
+                        Angle = -Angle;
+                        Sprite.Rotation = Angle;
+                    }
                 }
                 FrameTime++;
-                if (FrameTime > 10)
+                if (FrameTime > 20)
                 {
                     Frame++;
                     if (Frame > 1)

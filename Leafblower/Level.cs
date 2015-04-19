@@ -30,22 +30,22 @@ namespace Leafblower
         {
             GameState = gameState;
             Enemies = new List<Entity>();
-            if (id == 1)
+            if (id == 0)
             {
                 Background = new Sprite(Resources.Textures["pavement"]);
                 Collector = new Basket();
-                CollectionTarget = 50;
+                CollectionTarget = 100;
                 Center = new Vector2f(Game.Width / 2, 0);
                 for (int i = 0; i < 100; i++)
                 {
                     Enemies.Add(new Leaf((float)(Game.Random.NextDouble() * 0.8 + 0.1) * Game.Width, (float)(Game.Random.NextDouble() * 0.6 + 0.3) * Game.Height));
                 }
             }
-            else if (id == 0)
+            else if (id == 1)
             {
                 Background = new Sprite(Resources.Textures["dirt"]);
                 Collector = new Magnifier();
-                CollectionTarget = 25;
+                CollectionTarget = 50;
                 Center = new Vector2f(520, 275);
                 for (int i = 0; i < 100; i++)
                 {
@@ -60,6 +60,48 @@ namespace Leafblower
                     }
                     while (dX * dX + dY * dY < 2500);
                     Enemies.Add(new Ant(x, y));
+                }
+            }
+            else if (id == 2)
+            {
+                Background = new Sprite(Resources.Textures["wood"]);
+                Collector = new Trap();
+                CollectionTarget = 20;
+                Center = new Vector2f(205, 190);
+                for (int i = 0; i < 20; i++)
+                {
+                    float x, y;
+                    float dX, dY;
+                    do
+                    {
+                        x = (float)Game.Random.NextDouble() * Game.Width;
+                        y = (float)Game.Random.NextDouble() * Game.Height;
+                        dX = x - Center.X;
+                        dY = y - Center.Y;
+                    }
+                    while (dX * dX + dY * dY < 10000);
+                    Enemies.Add(new Rat(x, y));
+                }
+            }
+            else if (id == 3)
+            {
+                Background = new Sprite(Resources.Textures["metal"]);
+                Collector = new Grill();
+                CollectionTarget = 20;
+                Center = new Vector2f(400, 225);
+                for (int i = 0; i < 20; i++)
+                {
+                    float x, y;
+                    float dX, dY;
+                    do
+                    {
+                        x = (float)Game.Random.NextDouble() * Game.Width;
+                        y = (float)Game.Random.NextDouble() * Game.Height;
+                        dX = x - Center.X;
+                        dY = y - Center.Y;
+                    }
+                    while (dX * dX + dY * dY < 14400);
+                    Enemies.Add(new Pig(x, y));
                 }
             }
             Leafblower = new Leafblower(Center);
@@ -79,7 +121,6 @@ namespace Leafblower
                 if (FadeInTime > 0)
                 {
                     FadeInTime -= 4;
-                    Console.WriteLine(FadeInTime);
                     if (FadeOutTime < 0)
                     {
                         FadeOutTime = 0;
@@ -134,18 +175,12 @@ namespace Leafblower
         public void Draw()
         {
             Game.Window.Draw(Background);
-            if (Collector.Below)
-            {
-                Collector.Draw();
-            }
+            Collector.DrawBelow();
             for (int i = 0; i < Enemies.Count; i++)
             {
                 Enemies[i].Draw();
             }
-            if (!Collector.Below)
-            {
-                Collector.Draw();
-            }
+            Collector.DrawAbove();
             Leafblower.Draw();
             Game.Window.Draw(CollectionText);
             if (Won || FadeInTime > 0)

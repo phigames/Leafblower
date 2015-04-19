@@ -9,7 +9,7 @@ using SFML.Graphics;
 
 namespace Leafblower
 {
-    class Ant : Entity
+    class Rat : Entity
     {
         private Texture Texture;
         private IntRect[] AnimationFrames;
@@ -18,23 +18,21 @@ namespace Leafblower
         private float Angle;
         private float WalkingSpeed;
         private Vector2f Speed;
-        private byte Alpha;
 
-        public Ant(float x, float y)
+        public Rat(float x, float y)
         {
-            Texture = Resources.Textures["ant"];
-            AnimationFrames = new IntRect[] { new IntRect(0, 0, 43, 39), new IntRect(43, 0, 43, 39) };
+            Texture = Resources.Textures["mouse"];
+            AnimationFrames = new IntRect[] { new IntRect(0, 0, 181, 63), new IntRect(181, 0, 181, 63) };
             Frame = Game.Random.Next(2);
             FrameTime = Game.Random.Next(10);
             Sprite = new Sprite(Texture, AnimationFrames[Frame]);
             HitPoint = new Vector2f(x, y);
             HitRadius = 15;
             Angle = (float)Game.Random.NextDouble() * 360;
-            WalkingSpeed = 1;
-            Sprite.Origin = new Vector2f(22, 20);
+            WalkingSpeed = 1.5f;
+            Sprite.Origin = new Vector2f(115, 35);
             Sprite.Position = HitPoint;
             Sprite.Rotation = Angle;
-            Alpha = 255;
         }
 
         public override void Update(Level level)
@@ -49,13 +47,13 @@ namespace Leafblower
                 {
                     Speed *= 0.9f;
                 }
-                HitPoint += Speed * 800;
+                HitPoint += Speed * 500;
                 double a = Angle * Math.PI / 180;
                 HitPoint += new Vector2f((float)Math.Cos(a) * WalkingSpeed, (float)Math.Sin(a) * WalkingSpeed);
                 Sprite.Position = HitPoint;
                 float dX = HitPoint.X - level.Center.X;
                 float dY = HitPoint.Y - level.Center.Y;
-                if (dX * dX + dY * dY < 2500)
+                if (dX * dX + dY * dY < 10000)
                 {
                     if (dX > 0)
                     {
@@ -99,27 +97,16 @@ namespace Leafblower
                     {
                         Frame = 0;
                     }
+                    Sprite.Texture = Texture;
                     Sprite.TextureRect = AnimationFrames[Frame];
                     FrameTime = 0;
-                }
-            }
-            else
-            {
-                if (Alpha > 0)
-                {
-                    Alpha -= 8;
-                    if (Alpha < 8)
-                    {
-                        Alpha = 0;
-                    }
-                    Sprite.Color = new Color(255, 255, 255, Alpha);
                 }
             }
         }
 
         public override void Draw()
         {
-            if (Alpha > 0)
+            if (!Collected)
             {
                 Game.Window.Draw(Sprite);
             }
