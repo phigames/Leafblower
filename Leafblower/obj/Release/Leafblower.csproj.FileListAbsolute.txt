@@ -33,3 +33,14 @@ C:\phi\ld32\Leafblower\Leafblower\bin\Release\sfmlnet-graphics-2.dll
 C:\phi\ld32\Leafblower\Leafblower\bin\Release\sfmlnet-window-2.dll
 C:\phi\ld32\Leafblower\Leafblower\obj\Release\Leafblower.exe
 C:\phi\ld32\Leafblower\Leafblower\obj\Release\Leafblower.pdb
+C:\phi\ld32\Leafblower\Leafblower\bin\Release\res\bin.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Release\res\blow.wav
+C:\phi\ld32\Leafblower\Leafblower\bin\Release\res\earth.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Release\res\fart.wav
+C:\phi\ld32\Leafblower\Leafblower\bin\Release\res\milkyway.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Release\res\roast.wav
+C:\phi\ld32\Leafblower\Leafblower\bin\Release\res\saturn.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Release\res\sizzle.wav
+C:\phi\ld32\Leafblower\Leafblower\bin\Release\res\sky.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Release\res\star.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Release\res\trap.wav

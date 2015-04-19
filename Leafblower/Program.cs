@@ -30,6 +30,7 @@ namespace Leafblower
         public static RenderWindow Window;
         public static Random Random;
         public static GameState State;
+        public static int GameTime;
 
         public static void Initialize()
         {
@@ -68,7 +69,6 @@ namespace Leafblower
         {
             while (Running)
             {
-                Console.WriteLine(State);
                 Window.DispatchEvents();
                 while (Timer.ElapsedMilliseconds - LastUpdate >= UpdateInterval)
                 {

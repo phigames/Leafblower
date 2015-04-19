@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using SFML.Window;
 using SFML.Graphics;
+using SFML.Audio;
 
 namespace Leafblower
 {
@@ -16,6 +17,7 @@ namespace Leafblower
         private int Frame;
         private int FrameTime;
         private List<Blood> Bloods;
+        private Sound FartSound;
         
         public Saw()
         {
@@ -28,6 +30,7 @@ namespace Leafblower
             Sprite.Origin = new Vector2f(38, 30);
             Sprite.Position = HitPoint;
             Bloods = new List<Blood>();
+            FartSound = Resources.Sounds["fart"];
         }
 
         protected override void Collect(Entity enemy)
@@ -35,6 +38,7 @@ namespace Leafblower
             Collection++;
             enemy.BeCollected(HitPoint);
             Bloods.Add(new Blood(HitPoint.X, HitPoint.Y));
+            FartSound.Play();
         }
 
         protected override void UpdateAnimations(Level level)

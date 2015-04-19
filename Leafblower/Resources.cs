@@ -44,6 +44,13 @@ namespace Leafblower
             Textures.Add("city", new Texture("res/city.png"));
             Textures.Add("saw", new Texture("res/saw.png"));
             Textures.Add("human", new Texture("res/human.png"));
+            // Level 6
+            Textures.Add("sky", new Texture("res/sky.png"));
+            Textures.Add("bin", new Texture("res/bin.png"));
+            Textures.Add("earth", new Texture("res/earth.png"));
+            Textures.Add("saturn", new Texture("res/saturn.png"));
+            Textures.Add("milkyway", new Texture("res/milkyway.png"));
+            Textures.Add("star", new Texture("res/star.png"));
             for (int i = 0; i < Textures.Count; i++)
             {
                 Textures.ElementAt(i).Value.Smooth = true;
@@ -55,6 +62,7 @@ namespace Leafblower
             Sounds.Add("trap", new Sound(new SoundBuffer("res/trap.wav")));
             Sounds.Add("sizzle", new Sound(new SoundBuffer("res/sizzle.wav")));
             Sounds.Add("roast", new Sound(new SoundBuffer("res/roast.wav")));
+            Sounds.Add("fart", new Sound(new SoundBuffer("res/fart.wav")));
         }
     }
 }

@@ -38,3 +38,10 @@ C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\blow.wav
 C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\trap.wav
 C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\sizzle.wav
 C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\roast.wav
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\bin.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\earth.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\milkyway.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\saturn.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\sky.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\star.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\fart.wav

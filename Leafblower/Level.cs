@@ -29,6 +29,7 @@ namespace Leafblower
         public Vector2f Center;
         public Leafblower Leafblower;
         public List<Entity> Enemies;
+        private Text GameTimeText;
 
         public Level(LevelState gameState, int id)
         {
@@ -143,14 +144,36 @@ namespace Leafblower
                         dX = x - Center.X;
                         dY = y - Center.Y;
                     }
-                    while (!Human.CanGo(x, y));
+                    while (!Human.CanGo(x, y) || dX * dX + dY * dY < 10000);
                     Enemies.Add(new Human(x, y));
                 }
             }
-            else
+            else if (id == 5)
             {
-                d = true;
-                Game.State = new EndState();
+                StartImage = new Sprite(Resources.Textures["human"], new IntRect(47, 0, 31, 29));
+                StartImage.Origin = new Vector2f(16, 15);
+                StartMessage = "Nothing can stop the almighty Leaf Blower.";
+                Background = new Sprite(Resources.Textures["sky"]);
+                Collector = new Bin();
+                CollectionTarget = 33;
+                Center = new Vector2f(70, 380);
+                Enemies.Add(new Earth(500, 300));
+                Enemies.Add(new Saturn(200, 150));
+                Enemies.Add(new Milkyway(650, 100));
+                for (int i = 0; i < 30; i++)
+                {
+                    float x, y;
+                    float dX, dY;
+                    do
+                    {
+                        x = (float)Game.Random.NextDouble() * Game.Width;
+                        y = (float)Game.Random.NextDouble() * Game.Height;
+                        dX = x - Center.X;
+                        dY = y - Center.Y;
+                    }
+                    while (dX * dX + dY * dY < 2500);
+                    Enemies.Add(new Star(x, y));
+                }
             }
             if (!d)
             {
@@ -166,6 +189,18 @@ namespace Leafblower
                 FadeRectangle = new RectangleShape(new Vector2f(Game.Width, Game.Height));
                 FadeInTime = 255;
                 FadeRectangle.FillColor = new Color(255, 255, 255, (byte)FadeInTime);
+                int t = Game.GameTime / 50;
+                int s = t % 60;
+                if (s >= 10)
+                {
+                    GameTimeText = new Text(String.Format("{0}:{1}", t / 60, s), Resources.Font, 50);
+                }
+                else
+                {
+                    GameTimeText = new Text(String.Format("{0}:0{1}", t / 60, s), Resources.Font, 50);
+                }
+                GameTimeText.Position = new Vector2f(650, 30);
+                GameTimeText.Color = Color.Black;
             }
         }
 
@@ -174,6 +209,17 @@ namespace Leafblower
             if (FadeInTime < 255)
             {
                 Leafblower.Update(this);
+                Game.GameTime++;
+                int t = Game.GameTime / 50;
+                int s = t % 60;
+                if (s >= 10)
+                {
+                    GameTimeText.DisplayedString = String.Format("{0}:{1}", t / 60, t % 60);
+                }
+                else
+                {
+                    GameTimeText.DisplayedString = String.Format("{0}:0{1}", t / 60, t % 60);
+                }
             }
             if (!Won)
             {
@@ -256,6 +302,7 @@ namespace Leafblower
             Collector.DrawAbove();
             Leafblower.Draw();
             Game.Window.Draw(CollectionText);
+            Game.Window.Draw(GameTimeText);
             if (Won || FadeInTime > 0)
             {
                 Game.Window.Draw(FadeRectangle);
