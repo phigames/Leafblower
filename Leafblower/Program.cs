@@ -29,7 +29,7 @@ namespace Leafblower
         public static uint Width, Height;
         public static RenderWindow Window;
         public static Random Random;
-        private static GameState State;
+        public static GameState State;
 
         public static void Initialize()
         {
@@ -42,7 +42,7 @@ namespace Leafblower
             Window.SetFramerateLimit(60);
             Window.Closed += Window_Closed;
             Random = new Random();
-            State = new LevelState();
+            State = new MenuState();
         }
 
         static void Window_Closed(object sender, EventArgs e)
@@ -68,6 +68,7 @@ namespace Leafblower
         {
             while (Running)
             {
+                Console.WriteLine(State);
                 Window.DispatchEvents();
                 while (Timer.ElapsedMilliseconds - LastUpdate >= UpdateInterval)
                 {

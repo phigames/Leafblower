@@ -12,6 +12,10 @@ namespace Leafblower
     class Level
     {
         private LevelState GameState;
+        private Sprite StartImage;
+        private string StartMessage;
+        private Text StartMessageText;
+        private int StartMessageTime;
         private Sprite Background;
         private CollectionDevice Collector;
         private int Collection;
@@ -30,8 +34,13 @@ namespace Leafblower
         {
             GameState = gameState;
             Enemies = new List<Entity>();
+            bool d = false;
             if (id == 0)
             {
+                StartImage = new Sprite(Resources.Textures["leafblower"]);
+                StartImage.Origin = new Vector2f(23, 73);
+                StartImage.Rotation = 90;
+                StartMessage = "You're a Leaf Blower. Leaf Blowers blow leaves.";
                 Background = new Sprite(Resources.Textures["pavement"]);
                 Collector = new Basket();
                 CollectionTarget = 100;
@@ -43,11 +52,14 @@ namespace Leafblower
             }
             else if (id == 1)
             {
+                StartImage = new Sprite(Resources.Textures["leaf2"]);
+                StartImage.Origin = new Vector2f(18, 38);
+                StartMessage = "How boring. Let's try something else...";
                 Background = new Sprite(Resources.Textures["dirt"]);
                 Collector = new Magnifier();
-                CollectionTarget = 20;
+                CollectionTarget = 30;
                 Center = new Vector2f(520, 275);
-                for (int i = 0; i < 50; i++)
+                for (int i = 0; i < 30; i++)
                 {
                     float x, y;
                     float dX, dY;
@@ -64,6 +76,10 @@ namespace Leafblower
             }
             else if (id == 2)
             {
+                StartImage = new Sprite(Resources.Textures["ant"], new IntRect(0, 0, 43, 39));
+                StartImage.Origin = new Vector2f(22, 20);
+                StartMessage = "This is too easy for you.";
+                Background = new Sprite(Resources.Textures["dirt"]);
                 Background = new Sprite(Resources.Textures["wood"]);
                 Collector = new Trap();
                 CollectionTarget = 20;
@@ -85,6 +101,9 @@ namespace Leafblower
             }
             else if (id == 3)
             {
+                StartImage = new Sprite(Resources.Textures["mouse"], new IntRect(0, 0, 181, 63));
+                StartImage.Origin = new Vector2f(91, 32);
+                StartMessage = "What's next, you ask?";
                 Background = new Sprite(Resources.Textures["metal"]);
                 Collector = new Grill();
                 CollectionTarget = 20;
@@ -106,6 +125,9 @@ namespace Leafblower
             }
             else if (id == 4)
             {
+                StartImage = new Sprite(Resources.Textures["pig"], new IntRect(0, 0, 187, 82));
+                StartImage.Origin = new Vector2f(94, 41);
+                StartMessage = "Let's move on to greater things.";
                 Background = new Sprite(Resources.Textures["city"]);
                 Collector = new Saw();
                 CollectionTarget = 100;
@@ -125,30 +147,59 @@ namespace Leafblower
                     Enemies.Add(new Human(x, y));
                 }
             }
-            Leafblower = new Leafblower(Center);
-            CollectionText = new Text(String.Format("0/{0}", CollectionTarget), Resources.Font, 50);
-            CollectionText.Position = new Vector2f(30, 30);
-            CollectionText.Color = Color.Black;
-            FadeRectangle = new RectangleShape(new Vector2f(Game.Width, Game.Height));
-            FadeInTime = 255;
-            FadeRectangle.FillColor = new Color(255, 255, 255, (byte)FadeInTime);
+            else
+            {
+                d = true;
+                Game.State = new EndState();
+            }
+            if (!d)
+            {
+                StartImage.Position = new Vector2f(Game.Width / 2, 150);
+                StartImage.Color = new Color(255, 255, 255, (byte)(StartMessageTime * 255 / 50));
+                StartMessageText = new Text(StartMessage, Resources.Font, 30);
+                StartMessageText.Position = new Vector2f((Game.Width - StartMessageText.GetLocalBounds().Width) / 2, 280);
+                StartMessageText.Color = new Color(0, 0, 0, (byte)(StartMessageTime * 255 / 50));
+                Leafblower = new Leafblower(Center);
+                CollectionText = new Text(String.Format("0/{0}", CollectionTarget), Resources.Font, 50);
+                CollectionText.Position = new Vector2f(30, 30);
+                CollectionText.Color = Color.Black;
+                FadeRectangle = new RectangleShape(new Vector2f(Game.Width, Game.Height));
+                FadeInTime = 255;
+                FadeRectangle.FillColor = new Color(255, 255, 255, (byte)FadeInTime);
+            }
         }
 
         public void Update()
         {
-            Leafblower.Update(this);
+            if (FadeInTime < 255)
+            {
+                Leafblower.Update(this);
+            }
             if (!Won)
             {
-                if (FadeInTime > 0)
+                if (StartMessageTime < 300)
+                {
+                    StartMessageTime++;
+                    if (StartMessageTime < 50)
+                    {
+                        StartImage.Color = new Color(255, 255, 255, (byte)(StartMessageTime * 255 / 50));
+                        StartMessageText.Color = new Color(0, 0, 0, (byte)(StartMessageTime * 255 / 50));
+                    }
+                    else if (StartMessageTime > 250)
+                    {
+                        StartImage.Color = new Color(255, 255, 255, (byte)((300 - StartMessageTime) * 255 / 50));
+                        StartMessageText.Color = new Color(0, 0, 0, (byte)((300 - StartMessageTime) * 255 / 50));
+                    }
+                }
+                else if (FadeInTime > 0)
                 {
                     FadeInTime -= 4;
-                    if (FadeOutTime < 0)
+                    if (FadeInTime < 0)
                     {
-                        FadeOutTime = 0;
+                        FadeInTime = 0;
                     }
                     FadeRectangle.FillColor = new Color(255, 255, 255, (byte)FadeInTime);
                 }
-
                 for (int i = 0; i < Enemies.Count; i++)
                 {
                     Enemies[i].Update(this);
@@ -158,7 +209,7 @@ namespace Leafblower
                 {
                     Collection = Collector.Collection;
                     CollectionText.DisplayedString = String.Format("{0}/{1}", Collection, CollectionTarget);
-                    CollectionText.Color = new Color(192, 192, 192);
+                    CollectionText.Color = new Color(128, 128, 128);
                     CollectionWhiteTime = 16;
                     if (Collection >= CollectionTarget)
                     {
@@ -188,7 +239,7 @@ namespace Leafblower
                 }
                 else
                 {
-                    byte c = (byte)(CollectionWhiteTime * 12);
+                    byte c = (byte)(CollectionWhiteTime * 8);
                     CollectionText.Color = new Color(c, c, c);
                 }
             }
@@ -208,6 +259,11 @@ namespace Leafblower
             if (Won || FadeInTime > 0)
             {
                 Game.Window.Draw(FadeRectangle);
+            }
+            if (StartMessageTime < 300)
+            {
+                Game.Window.Draw(StartImage);
+                Game.Window.Draw(StartMessageText);
             }
         }
     }
