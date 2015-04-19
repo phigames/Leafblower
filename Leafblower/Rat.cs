@@ -39,7 +39,8 @@ namespace Leafblower
         {
             if (!Collected)
             {
-                if (level.Leafblower.Blowing && level.Leafblower.InBlowingRange(HitPoint.X, HitPoint.Y))
+                bool b = level.Leafblower.Blowing && level.Leafblower.InBlowingRange(HitPoint.X, HitPoint.Y);
+                if (b)
                 {
                     Speed = level.Leafblower.GetSpeedVector(HitPoint.X, HitPoint.Y);
                 }
@@ -68,26 +69,38 @@ namespace Leafblower
                 if (HitPoint.X < HitRadius)
                 {
                     HitPoint = new Vector2f(HitRadius, HitPoint.Y);
-                    Angle = 180 - Angle;
-                    Sprite.Rotation = Angle;
+                    if (!b)
+                    {
+                        Angle = 180 - Angle;
+                        Sprite.Rotation = Angle;
+                    }
                 }
                 else if (HitPoint.X > Game.Width - HitRadius)
                 {
                     HitPoint = new Vector2f(Game.Width - HitRadius, HitPoint.Y);
-                    Angle = 180 - Angle;
-                    Sprite.Rotation = Angle;
+                    if (!b)
+                    {
+                        Angle = 180 - Angle;
+                        Sprite.Rotation = Angle;
+                    }
                 }
                 if (HitPoint.Y < HitRadius)
                 {
                     HitPoint = new Vector2f(HitPoint.X, HitRadius);
-                    Angle = -Angle;
-                    Sprite.Rotation = Angle;
+                    if (!b)
+                    {
+                        Angle = -Angle;
+                        Sprite.Rotation = Angle;
+                    }
                 }
                 else if (HitPoint.Y > Game.Height - HitRadius)
                 {
                     HitPoint = new Vector2f(HitPoint.X, Game.Height - HitRadius);
-                    Angle = -Angle;
-                    Sprite.Rotation = Angle;
+                    if (!b)
+                    {
+                        Angle = -Angle;
+                        Sprite.Rotation = Angle;
+                    }
                 }
                 FrameTime++;
                 if (FrameTime > 10)

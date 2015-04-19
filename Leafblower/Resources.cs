@@ -5,13 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 using SFML.Graphics;
+using SFML.Audio;
 
 namespace Leafblower
 {
     static class Resources
     {
-        public static Dictionary<String, Texture> Textures;
+        public static Dictionary<string, Texture> Textures;
         public static Font Font;
+        public static Dictionary<string, Sound> Sounds;
 
         public static void Load()
         {
@@ -38,11 +40,21 @@ namespace Leafblower
             Textures.Add("grill", new Texture("res/grill.png"));
             Textures.Add("pig", new Texture("res/pig.png"));
             Textures.Add("bacon", new Texture("res/bacon.png"));
+            // Level 5
+            Textures.Add("city", new Texture("res/city.png"));
+            Textures.Add("saw", new Texture("res/saw.png"));
+            Textures.Add("human", new Texture("res/human.png"));
             for (int i = 0; i < Textures.Count; i++)
             {
                 Textures.ElementAt(i).Value.Smooth = true;
             }
             Font = new Font("res/Bangers.ttf");
+            Sounds = new Dictionary<string, Sound>();
+            Sounds.Add("blow", new Sound(new SoundBuffer("res/blow.wav")));
+            Sounds["blow"].Loop = true;
+            Sounds.Add("trap", new Sound(new SoundBuffer("res/trap.wav")));
+            Sounds.Add("sizzle", new Sound(new SoundBuffer("res/sizzle.wav")));
+            Sounds.Add("roast", new Sound(new SoundBuffer("res/roast.wav")));
         }
     }
 }

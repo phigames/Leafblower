@@ -45,9 +45,9 @@ namespace Leafblower
             {
                 Background = new Sprite(Resources.Textures["dirt"]);
                 Collector = new Magnifier();
-                CollectionTarget = 50;
+                CollectionTarget = 20;
                 Center = new Vector2f(520, 275);
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 50; i++)
                 {
                     float x, y;
                     float dX, dY;
@@ -58,7 +58,7 @@ namespace Leafblower
                         dX = x - Center.X;
                         dY = y - Center.Y;
                     }
-                    while (dX * dX + dY * dY < 2500);
+                    while (dX * dX + dY * dY < 6400);
                     Enemies.Add(new Ant(x, y));
                 }
             }
@@ -102,6 +102,27 @@ namespace Leafblower
                     }
                     while (dX * dX + dY * dY < 14400);
                     Enemies.Add(new Pig(x, y));
+                }
+            }
+            else if (id == 4)
+            {
+                Background = new Sprite(Resources.Textures["city"]);
+                Collector = new Saw();
+                CollectionTarget = 100;
+                Center = new Vector2f(39, 233);
+                for (int i = 0; i < 100; i++)
+                {
+                    float x, y;
+                    float dX, dY;
+                    do
+                    {
+                        x = (float)Game.Random.NextDouble() * Game.Width;
+                        y = (float)Game.Random.NextDouble() * Game.Height;
+                        dX = x - Center.X;
+                        dY = y - Center.Y;
+                    }
+                    while (!Human.CanGo(x, y));
+                    Enemies.Add(new Human(x, y));
                 }
             }
             Leafblower = new Leafblower(Center);
@@ -149,6 +170,7 @@ namespace Leafblower
             }
             else
             {
+                Leafblower.StopBlowing();
                 FadeOutTime += 4;
                 if (FadeOutTime > 255)
                 {

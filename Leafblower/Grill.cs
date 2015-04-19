@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 using SFML.Window;
 using SFML.Graphics;
+using SFML.Audio;
 
 namespace Leafblower
 {
     class Grill : CollectionDevice
     {
         private List<Bacon> Bacons;
+        private Sound RoastSound;
 
         public Grill()
         {
@@ -21,6 +23,7 @@ namespace Leafblower
             Sprite.Origin = new Vector2f(100, 70);
             Sprite.Position = HitPoint;
             Bacons = new List<Bacon>();
+            RoastSound = Resources.Sounds["roast"];
         }
 
         protected override void Collect(Entity enemy)
@@ -30,6 +33,7 @@ namespace Leafblower
             float y = enemy.HitPoint.Y;
             enemy.BeCollected(new Vector2f(x, y));
             Bacons.Add(new Bacon(x, y));
+            RoastSound.Play();
         }
 
         protected override void UpdateAnimations(Level level)

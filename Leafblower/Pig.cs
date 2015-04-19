@@ -45,7 +45,7 @@ namespace Leafblower
                 if (b)
                 {
                     Speed = level.Leafblower.GetSpeedVector(HitPoint.X, HitPoint.Y);
-                    WalkingSpeed = 1;
+                    WalkingSpeed = 1.2f;
                 }
                 else
                 {
@@ -58,20 +58,17 @@ namespace Leafblower
                 Sprite.Position = HitPoint;
                 float dX = HitPoint.X - level.Center.X;
                 float dY = HitPoint.Y - level.Center.Y;
-                if (!b)
+                if (dX * dX + dY * dY < 14400)
                 {
-                    if (dX * dX + dY * dY < 14400)
+                    if (dX > 0)
                     {
-                        if (dX > 0)
-                        {
-                            Angle = (float)(Math.Atan(dY / dX) / Math.PI * 180);
-                        }
-                        else
-                        {
-                            Angle = (float)(Math.Atan(dY / dX) / Math.PI * 180) + 180;
-                        }
-                        Sprite.Rotation = Angle;
+                        Angle = (float)(Math.Atan(dY / dX) / Math.PI * 180);
                     }
+                    else
+                    {
+                        Angle = (float)(Math.Atan(dY / dX) / Math.PI * 180) + 180;
+                    }
+                    Sprite.Rotation = Angle;
                 }
                 if (HitPoint.X < HitRadius)
                 {
@@ -110,7 +107,16 @@ namespace Leafblower
                     }
                 }
                 FrameTime++;
-                if (FrameTime > 20)
+                int t;
+                if (!b)
+                {
+                    t = 20;
+                }
+                else
+                {
+                    t = 10;
+                }
+                if (FrameTime > t)
                 {
                     Frame++;
                     if (Frame > 1)

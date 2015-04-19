@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using SFML.Window;
 using SFML.Graphics;
+using SFML.Audio;
 
 namespace Leafblower
 {
@@ -16,6 +17,7 @@ namespace Leafblower
         private int Frame;
         private int FrameTime;
         private List<Blood> Bloods;
+        private Sound CatchSound;
 
         public Trap()
         {
@@ -24,10 +26,11 @@ namespace Leafblower
             Frame = 0;
             Sprite = new Sprite(Texture, AnimationFrames[Frame]);
             HitPoint = new Vector2f(205, 190);
-            HitRadius = 50;
+            HitRadius = 80;
             Sprite.Origin = new Vector2f(165, 105);
             Sprite.Position = HitPoint;
             Bloods = new List<Blood>();
+            CatchSound = Resources.Sounds["trap"];
         }
 
         protected override void Collect(Entity enemy)
@@ -37,6 +40,7 @@ namespace Leafblower
             Frame = 1;
             Sprite.TextureRect = AnimationFrames[Frame];
             Bloods.Add(new Blood(HitPoint.X, HitPoint.Y));
+            CatchSound.Play();
         }
 
         protected override void UpdateAnimations(Level level)

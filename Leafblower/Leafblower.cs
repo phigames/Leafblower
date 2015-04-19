@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using SFML.Window;
 using SFML.Graphics;
+using SFML.Audio;
 
 namespace Leafblower
 {
@@ -16,6 +17,8 @@ namespace Leafblower
         private List<LeafblowerAir> Airs;
         private int AirTime;
         public bool Blowing;
+        private bool TogglingBlow;
+        private Sound BlowSound;
 
         public Leafblower(Vector2f center)
         {
@@ -25,6 +28,7 @@ namespace Leafblower
             Sprite.Position = Center;
             Angle = 0;
             Airs = new List<LeafblowerAir>();
+            BlowSound = Resources.Sounds["blow"];
         }
 
         public bool InBlowingRange(float x, float y)
@@ -71,6 +75,20 @@ namespace Leafblower
             return new Vector2f(dX / d, dY / d);
         }
 
+        public void StartBlowing()
+        {
+            Blowing = true;
+            BlowSound.Volume = 0.5f;
+            BlowSound.Pitch = BlowSound.Volume / 100;
+            BlowSound.Play();
+        }
+
+        public void StopBlowing()
+        {
+            Blowing = false;
+            AirTime = 0;
+        }
+
         override public void Update(Level level)
         {
             for (int i = 0; i < Airs.Count; i++)
@@ -99,20 +117,50 @@ namespace Leafblower
             Sprite.Position = new Vector2f(m.X, m.Y);
             if (Mouse.IsButtonPressed(Mouse.Button.Left))
             {
-                Blowing = true;
+                if (!TogglingBlow)
+                {
+                    TogglingBlow = true;
+                    if (!Blowing)
+                    {
+                        StartBlowing();
+                    }
+                    else
+                    {
+                        StopBlowing();
+                    }
+                }
+            }
+            else
+            {
+                TogglingBlow = false;
+            }
+            if (Blowing)
+            {
                 AirTime--;
                 if (AirTime <= 0)
                 {
                     Airs.Add(new LeafblowerAir(Angle, Sprite.Position.X, Sprite.Position.Y));
                     AirTime = 10;
                 }
+                if (BlowSound.Volume < 100)
+                {
+                    BlowSound.Volume += 10;
+                    BlowSound.Pitch = BlowSound.Volume / 200 + 0.5f;
+                }
             }
             else
             {
-                if (Blowing)
+                if (BlowSound.Status == SoundStatus.Playing)
                 {
-                    Blowing = false;
-                    AirTime = 0;
+                    if (BlowSound.Volume > 0)
+                    {
+                        BlowSound.Volume -= 5;
+                        BlowSound.Pitch = BlowSound.Volume * 0.008f + 0.2f;
+                    }
+                    else
+                    {
+                        BlowSound.Stop();
+                    }
                 }
             }
         }

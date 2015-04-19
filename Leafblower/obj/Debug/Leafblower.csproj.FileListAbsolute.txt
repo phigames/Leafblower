@@ -31,3 +31,10 @@ C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\grill.png
 C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\metal.png
 C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\pig.png
 C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\bacon.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\city.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\human.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\saw.png
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\blow.wav
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\trap.wav
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\sizzle.wav
+C:\phi\ld32\Leafblower\Leafblower\bin\Debug\res\roast.wav

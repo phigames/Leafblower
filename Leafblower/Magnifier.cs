@@ -6,28 +6,32 @@ using System.Threading.Tasks;
 
 using SFML.Window;
 using SFML.Graphics;
+using SFML.Audio;
 
 namespace Leafblower
 {
     class Magnifier : CollectionDevice
     {
         private List<Smoke> Smokes;
+        private Sound SizzleSound;
 
         public Magnifier()
         {
             Sprite = new Sprite(Resources.Textures["magnifier"]);
             HitPoint = new Vector2f(520, 275);
-            HitRadius = 30;
+            HitRadius = 40;
             Sprite.Origin = new Vector2f(125, 335);
             Sprite.Position = HitPoint;
             Smokes = new List<Smoke>();
+            SizzleSound = Resources.Sounds["sizzle"];
         }
 
         protected override void Collect(Entity enemy)
         {
             Collection++;
-            enemy.BeCollected(enemy.HitPoint);
+            enemy.BeCollected(HitPoint);
             Smokes.Add(new Smoke(HitPoint.X, HitPoint.Y));
+            SizzleSound.Play();
         }
 
         protected override void UpdateAnimations(Level level)
@@ -63,7 +67,7 @@ namespace Leafblower
         public Smoke(float x, float y)
         {
             Sprite = new Sprite(Resources.Textures["smoke"]);
-            Offset = 100;
+            Offset = 80;
             Sprite.Origin = new Vector2f(24, Offset);
             Sprite.Position = new Vector2f(x, y);
             Alpha = 255;
